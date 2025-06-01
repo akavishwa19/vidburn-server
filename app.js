@@ -20,6 +20,8 @@ const __dirname = path.dirname(__filename);
 app.use('/public', express.static(path.join(__dirname, 'Uploads')));
 app.use('/output', express.static(path.join(__dirname, 'OutputVideo')));
 
+
+//UNUSED CODE below
 app.get("/public/:filename", (req, res) => {
   const filePath = path.join(__dirname, "Uploads", req.params.filename);
 
@@ -86,6 +88,8 @@ app.get("/output/:filename", (req, res) => {
     res.status(500).json({ error: "Error serving video" });
   }
 });
+
+//unused code above
 
 // app.get('/public/:filename', (req, res) => {
 //   if (!req.params.filename.endsWith('.mp4')) {

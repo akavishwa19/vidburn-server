@@ -3,7 +3,6 @@ import { upload_file } from "../Controllers/upload.controller.js";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
-import fs from "fs";
 import { fileURLToPath } from "url";
 
 const router = express.Router();
