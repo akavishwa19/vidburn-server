@@ -5,12 +5,136 @@ import chalk from "chalk";
 import { Worker } from "worker_threads";
 import { exec } from "child_process";
 import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+const __filename=fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+app.use('/public', express.static(path.join(__dirname, 'Uploads')));
+app.use('/output', express.static(path.join(__dirname, 'OutputVideo')));
+
+app.get("/public/:filename", (req, res) => {
+  const filePath = path.join(__dirname, "Uploads", req.params.filename);
+
+  // Check if the file exists
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: "Video not found" });
+  }
+
+  try {
+    // Read the entire file into memory
+    const fileBuffer = fs.readFileSync(filePath);
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+
+    // Set headers for the response
+    const head = {
+      "Content-Length": fileSize,
+      "Content-Type": "video/mp4",
+      "Accept-Ranges": "none", // Explicitly disable range requests
+      "Cache-Control": "public, max-age=31536000", // Cache for 1 year
+      "Last-Modified": stat.mtime.toUTCString(),
+      "ETag": `"${fileSize}-${stat.mtime.getTime()}"`,
+    };
+
+    // Send the entire buffer in one response
+    res.writeHead(200, head);
+    res.send(fileBuffer);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error serving video" });
+  }
+});
+
+// Route to serve videos from OutputVideo/
+app.get("/output/:filename", (req, res) => {
+  const filePath = path.join(__dirname, "OutputVideo", req.params.filename);
+
+  // Check if the file exists
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: "Video not found" });
+  }
+
+  try {
+    // Read the entire file into memory
+    const fileBuffer = fs.readFileSync(filePath);
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+
+    // Set headers for the response
+    const head = {
+      "Content-Length": fileSize,
+      "Content-Type": "video/mp4",
+      "Accept-Ranges": "none", // Explicitly disable range requests
+      "Cache-Control": "public, max-age=31536000", // Cache for 1 year
+      "Last-Modified": stat.mtime.toUTCString(),
+      "ETag": `"${fileSize}-${stat.mtime.getTime()}"`,
+    };
+
+    // Send the entire buffer in one response
+    res.writeHead(200, head);
+    res.send(fileBuffer);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error serving video" });
+  }
+});
+
+// app.get('/public/:filename', (req, res) => {
+//   if (!req.params.filename.endsWith('.mp4')) {
+//     return res.status(404).send('Not found');
+//   }
+  
+//   const videoPath = path.join(__dirname, 'Uploads', req.params.filename);
+  
+//   if (!fs.existsSync(videoPath)) {
+//     return res.status(404).send('Video not found');
+//   }
+
+//   // Read entire file into memory and send as one chunk
+//   const videoBuffer = fs.readFileSync(videoPath);
+  
+//   res.set({
+//     'Content-Type': 'video/mp4',
+//     'Content-Length': videoBuffer.length,
+//     'Accept-Ranges': 'none',
+//   });
+  
+//   res.end(videoBuffer);
+// });
+
+// app.get('/output/:filename', (req, res) => {
+//    if (!req.params.filename.endsWith('.mp4')) {
+//     return res.status(404).send('Not found');
+//   }
+  
+//   const videoPath = path.join(__dirname, 'OutputVideo', req.params.filename);
+  
+//   if (!fs.existsSync(videoPath)) {
+//     return res.status(404).send('Video not found');
+//   }
+
+//   // Read entire file into memory and send as one chunk
+//   const videoBuffer = fs.readFileSync(videoPath);
+  
+//   res.set({
+//     'Content-Type': 'video/mp4',
+//     'Content-Length': videoBuffer.length,
+//     'Accept-Ranges': 'none',
+//   });
+  
+//   res.end(videoBuffer);
+// });
+
 const PORT = process.env.PORT || 3001;
+
 
 app.get("/", async (req, res) => {
   try {
@@ -83,6 +207,8 @@ app.listen(PORT, () => {
     "app is running on " + chalk.blue.bold("http://localhost:" + PORT)
   );
 });
+
+//CODE FOR MY
 
 // copy the contents of a file and paste it into another file in  an optimal way
 // import fs from 'fs';
