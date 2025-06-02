@@ -20,6 +20,11 @@ const __dirname = path.dirname(__filename);
 app.use('/public', express.static(path.join(__dirname, 'Uploads')));
 app.use('/output', express.static(path.join(__dirname, 'OutputVideo')));
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`, req.body);
+  next();
+});
+
 
 //UNUSED CODE below
 app.get("/public/:filename", (req, res) => {
