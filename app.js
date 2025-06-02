@@ -137,7 +137,7 @@ app.get("/output/:filename", (req, res) => {
 //   res.end(videoBuffer);
 // });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 
 app.get("/", async (req, res) => {
