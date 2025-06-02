@@ -15,7 +15,22 @@ VidBurn is an AI-powered Node.js application that enhances your videos by automa
 
 ---
 
+## Demo
 
+Link to video demo : https://www.loom.com/share/1ad153ff588f4403927912dddcf6a1f1?sid=3fc96156-b192-4696-956f-9ac97fa8e0bc
+
+videos used for the demo: https://drive.google.com/drive/folders/1KNP0pniyRIBysC9dCWPsXDAAgXIS1kSv?usp=sharing
+
+
+---
+
+## Screenshots
+
+![image](https://github.com/user-attachments/assets/ab674a86-38f1-4fba-b0f3-1b78e66c1bc0)
+
+![image](https://github.com/user-attachments/assets/431b5aed-8502-4ff1-9d37-f7af5055c115)
+
+---
 
 ## ⚖️ Requirements
 
